@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web:
+    image: storm
+    build: .
+    container_name: storm-dat
+    ports:
+      - "8000:8000"
+    volumes:
+      - whisper_cache:/root/.cache/whisper
+      - ./src/static/outputs:/app/src/static/outputs
+
+volumes:
+  whisper_cache:

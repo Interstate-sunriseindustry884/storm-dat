@@ -1,0 +1,108 @@
+{% extends 'modern_base.html' %}
+{% block title %}STORM Document Analysis Tool - Home{% endblock title %}
+
+{% block body %}
+<div class="hero">
+    <div class="container">
+        <h1 class="hero-title">STORM Document Analysis Tool</h1>
+        <p class="hero-subtitle">
+            Automated document analysis with security marking validation and
+            professional screen recording with AI-powered transcription.
+        </p>
+
+        <div class="button-group">
+            <a href="{{ url_for('main.upload_word') }}" class="btn btn-primary btn-lg">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Acronym Sweep
+            </a>
+
+            <a href="{{ url_for('main.record') }}" class="btn btn-secondary btn-lg">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Record Desktop
+            </a>
+
+            <button class="btn btn-secondary btn-lg" disabled>
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                FQT and SIT Analysis
+            </button>
+
+            <button class="btn btn-secondary btn-lg" disabled>
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                MCTD Analysis
+            </button>
+        </div>
+
+        <div class="grid grid-3 mt-xl" style="max-width: 900px; margin-left: auto; margin-right: auto;">
+            <div class="card">
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="margin: 0 auto; color: var(--primary-color);">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="card-title text-center">Automated Analysis</h3>
+                <p class="text-muted text-center">
+                    Automatically validate security markings, font styles, and acronym usage in Word documents.
+                </p>
+            </div>
+
+            <div class="card">
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="margin: 0 auto; color: var(--secondary-color);">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                    </svg>
+                </div>
+                <h3 class="card-title text-center">AI Transcription</h3>
+                <p class="text-muted text-center">
+                    Record your screen with audio and get automatic transcription using OpenAI Whisper.
+                </p>
+            </div>
+
+            <div class="card">
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="margin: 0 auto; color: var(--warning-color);">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h3 class="card-title text-center">Secure & Validated</h3>
+                <p class="text-muted text-center">
+                    Built-in security validation and file sanitization protect against common vulnerabilities.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-attachment: fixed;
+    }
+
+    .hero {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 2rem;
+        margin: 2rem;
+        padding: 3rem 1rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .hero {
+            margin: 1rem;
+            padding: 2rem 1rem;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock body %}

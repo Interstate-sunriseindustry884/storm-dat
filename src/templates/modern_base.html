@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern-styles.css') }}">
+    <title>{% block title %}STORM DAT{% endblock title %}</title>
+    {% block extra_css %}{% endblock extra_css %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="{{ url_for('main.index') }}" class="nav-brand">STORM DAT</a>
+            <div class="nav-links">
+                <a href="{{ url_for('main.upload_word') }}" class="nav-link">Acronym Sweep</a>
+                <a href="{{ url_for('main.record') }}" class="nav-link">Record</a>
+                <span class="nav-link" style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">FQT/SIT Analysis</span>
+                <span class="nav-link" style="opacity: 0.5; cursor: not-allowed; pointer-events: none;">MCTD Analysis</span>
+                <a href="{{ url_for('main.cleanup_static_files') }}" class="nav-link">Cleanup</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category in ['error', 'success', 'warning', 'info'] else 'info' }}">
+                        <div class="alert-icon">
+                            {% if category == 'error' %}
+                                <!-- Error Icon -->
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            {% elif category == 'success' %}
+                                <!-- Success Icon -->
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            {% elif category == 'warning' %}
+                                <!-- Warning Icon -->
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            {% else %}
+                                <!-- Info Icon -->
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            {% endif %}
+                        </div>
+                        <div class="alert-content">
+                            <div class="alert-title">
+                                {% if category == 'error' %}Error
+                                {% elif category == 'success' %}Success
+                                {% elif category == 'warning' %}Warning
+                                {% else %}Information
+                                {% endif %}
+                            </div>
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    {% block body %}{% endblock body %}
+
+    {% block extra_js %}{% endblock extra_js %}
+</body>
+</html>

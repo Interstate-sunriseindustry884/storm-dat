@@ -1,0 +1,718 @@
+{% extends 'modern_base.html' %}
+{% block title %}Desktop Recorder - STORM DAT{% endblock title %}
+
+{% block extra_css %}
+<style>
+  body {
+    background-color: var(--gray-50);
+  }
+
+  .record-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+  }
+
+  .record-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .record-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .record-header p {
+    color: var(--gray-600);
+    font-size: 1.125rem;
+  }
+
+  .status-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    min-height: 4em;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .status-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    color: var(--gray-700);
+  }
+
+  .status-spinner {
+    border: 3px solid var(--gray-300);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    width: 20px;
+    height: 20px;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .video-container {
+    flex: 2;
+    min-width: 0;
+  }
+
+  .video-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  #preview {
+    width: 100%;
+    height: auto;
+    background-color: #000;
+    aspect-ratio: 16 / 9;
+    display: block;
+  }
+
+  .video-actions {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .transcript-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    min-width: 300px;
+  }
+
+  .transcript-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--gray-50);
+    border-bottom: 1px solid var(--gray-200);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .transcript-header h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    color: var(--gray-900);
+  }
+
+  .transcript-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+
+  .transcript-toggle-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--gray-600);
+    transition: transform var(--transition-base);
+  }
+
+  .transcript-toggle-icon.rotated {
+    transform: rotate(180deg);
+  }
+
+  #transcript-wrapper {
+    max-height: 0;
+    opacity: 0;
+    overflow-y: auto;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  }
+
+  #transcript-wrapper.visible {
+    max-height: 50vh;
+    opacity: 1;
+  }
+
+  #transcript-content {
+    padding: var(--spacing-lg);
+  }
+
+  .transcript-segment {
+    padding: var(--spacing-sm);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-base);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .transcript-segment:hover {
+    background-color: var(--gray-50);
+  }
+
+  .transcript-segment .timestamp {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-right: 0.75em;
+  }
+
+  .record-island {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 0.75rem;
+    border-radius: 50px;
+    box-shadow: var(--shadow-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    z-index: 1000;
+  }
+
+  #record-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background-color: var(--danger-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all var(--transition-base);
+    position: relative;
+    box-shadow: var(--shadow-md);
+  }
+
+  #record-button:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+  }
+
+  #record-button:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 1);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+  }
+
+  #record-button.is-recording {
+    background-color: var(--primary-color);
+  }
+
+  #record-button.is-recording:before {
+    animation: none;
+  }
+
+  #record-button .icon {
+    width: 24px;
+    height: 24px;
+    background-color: white;
+  }
+
+  #record-button .icon-start {
+    clip-path: none;
+    background-color: transparent !important;
+    position: relative;
+  }
+
+  #record-button .icon-start::before {
+    content: "";
+    position: absolute;
+    background-color: white;
+    width: 20px;
+    height: 22px;
+    left: -2px;
+    top: 1px;
+    border-radius: 2px;
+  }
+
+  #record-button .icon-start::after {
+    content: "";
+    position: absolute;
+    background-color: white;
+    width: 8px;
+    height: 20px;
+    left: 18px;
+    top: 2px;
+    clip-path: polygon(0% 20%, 100% 0%, 100% 100%, 0% 80%);
+    border-radius: 2px;
+  }
+
+  #record-button .icon-stop {
+    border-radius: 4px;
+  }
+
+  #record-indicator {
+    width: 12px;
+    height: 12px;
+    background-color: var(--danger-color);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  #record-indicator.is-recording {
+    opacity: 1;
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+  #record-timer {
+    font-weight: 600;
+    color: var(--gray-700);
+    font-variant-numeric: tabular-nums;
+    min-width: 60px;
+    text-align: center;
+    opacity: 0;
+  }
+
+  #record-timer.visible {
+    opacity: 1;
+  }
+
+  .hidden-element {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .content-wrapper {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    #transcript-wrapper.visible {
+      max-height: 80vh;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .record-container {
+      padding: var(--spacing-md);
+    }
+
+    .record-island {
+      bottom: 1rem;
+      scale: 0.9;
+    }
+  }
+</style>
+{% endblock extra_css %}
+
+{% block body %}
+<div class="record-container">
+  <div class="record-header">
+    <h1>Desktop Recorder</h1>
+    <p>Record your screen with audio and get automatic transcription</p>
+  </div>
+
+  <div class="status-container">
+    <div id="alerts"></div>
+    <div id="transcription-status"></div>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="video-container">
+      <div class="video-card">
+        <video id="preview" autoplay muted playsinline></video>
+        <div class="video-actions">
+          <a id="downloadLink" href="#" download="recording.webm" class="btn btn-primary hidden-element">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Download Recording
+          </a>
+          <button id="screenshot-button" class="btn btn-secondary hidden-element">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Take Screenshot
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="transcript-section">
+      <div class="transcript-header" id="transcript-toggle">
+        <h3>Transcript</h3>
+        <div class="transcript-controls">
+          <a href="#" id="download-transcript" class="btn btn-sm btn-outline hidden-element">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Download
+          </a>
+          <svg class="transcript-toggle-icon" id="toggle-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+      <div id="transcript-wrapper">
+        <div id="transcript-content">
+          <p class="text-muted">Transcript will appear here after recording</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="record-island">
+  <button id="record-button" aria-label="Start Recording">
+    <div id="record-icon" class="icon icon-start"></div>
+  </button>
+  <div id="record-indicator"></div>
+  <div id="record-timer">0:00</div>
+</div>
+{% endblock body %}
+
+{% block extra_js %}
+<script>
+  const recordButton = document.getElementById("record-button");
+  const recordIcon = document.getElementById("record-icon");
+  const recordIndicator = document.getElementById("record-indicator");
+  const recordTimer = document.getElementById("record-timer");
+  const preview = document.getElementById("preview");
+  const downloadLink = document.getElementById("downloadLink");
+  const transcriptionStatus = document.getElementById("transcription-status");
+  const alerts = document.getElementById("alerts");
+  const transcriptWrapper = document.getElementById("transcript-wrapper");
+  const transcriptContent = document.getElementById("transcript-content");
+  const downloadTranscriptBtn = document.getElementById("download-transcript");
+  const screenshotButton = document.getElementById("screenshot-button");
+  const transcriptToggle = document.getElementById("transcript-toggle");
+  const toggleIcon = document.getElementById("toggle-icon");
+
+  let mediaRecorder;
+  let screenStream;
+  let micStream;
+  let recordedChunks = [];
+  let isRecording = false;
+  let fullTranscript = "";
+  let recordingStartTime;
+  let timerInterval;
+
+  function updateTimer() {
+    const elapsed = Date.now() - recordingStartTime;
+    const seconds = Math.floor(elapsed / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    recordTimer.textContent = `${minutes}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  function setRecordingUI(recording) {
+    isRecording = recording;
+    recordIndicator.classList.toggle("is-recording", recording);
+    recordButton.classList.toggle("is-recording", recording);
+    recordIcon.className = recording ? "icon icon-stop" : "icon icon-start";
+    recordButton.setAttribute("aria-label", recording ? "Stop Recording" : "Start Recording");
+    screenshotButton.classList.toggle("hidden-element", !recording);
+
+    if (recording) {
+      recordTimer.classList.add("visible");
+      recordingStartTime = Date.now();
+      timerInterval = setInterval(updateTimer, 1000);
+    } else {
+      recordTimer.classList.remove("visible");
+      if (timerInterval) clearInterval(timerInterval);
+      recordTimer.textContent = "0:00";
+    }
+  }
+
+  async function getMixedStreams() {
+    try {
+      screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const audioContext = new AudioContext();
+      const destination = audioContext.createMediaStreamDestination();
+
+      if (screenStream.getAudioTracks().length > 0) {
+        const systemSource = audioContext.createMediaStreamSource(screenStream);
+        systemSource.connect(destination);
+      } else {
+        showAlert("System audio is not being captured.", "warning");
+      }
+
+      if (micStream.getAudioTracks().length > 0) {
+        const micSource = audioContext.createMediaStreamSource(micStream);
+        micSource.connect(destination);
+      } else {
+        showAlert("No microphone audio is being shared.", "warning");
+      }
+
+      const combinedStream = new MediaStream();
+      screenStream.getVideoTracks().forEach((track) => combinedStream.addTrack(track));
+      destination.stream.getAudioTracks().forEach((track) => combinedStream.addTrack(track));
+
+      screenStream.getVideoTracks()[0].onended = () => {
+        if (isRecording) recordButton.click();
+      };
+
+      return combinedStream;
+    } catch (err) {
+      showAlert(`Error accessing media devices: ${err.message}`, "error");
+      return null;
+    }
+  }
+
+  function showAlert(message, type = "info") {
+    alerts.innerHTML = `<div class="alert alert-${type}"><div class="alert-content">${message}</div></div>`;
+    setTimeout(() => { alerts.innerHTML = ""; }, 5000);
+  }
+
+  async function startRecording() {
+    alerts.innerHTML = "";
+    transcriptionStatus.innerHTML = "";
+    downloadLink.classList.add("hidden-element");
+    downloadTranscriptBtn.classList.add("hidden-element");
+    transcriptWrapper.classList.remove("visible");
+    toggleIcon.classList.remove("rotated");
+    fullTranscript = "";
+    recordedChunks = [];
+
+    const combinedStream = await getMixedStreams();
+    if (!combinedStream) {
+      setRecordingUI(false);
+      return;
+    }
+
+    preview.srcObject = combinedStream;
+    preview.muted = true;
+    preview.controls = false;
+    preview.play();
+
+    mediaRecorder = new MediaRecorder(combinedStream, { mimeType: "video/webm; codecs=vp8,opus" });
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) recordedChunks.push(e.data);
+    };
+    mediaRecorder.onstop = handleRecordingStop;
+    mediaRecorder.start();
+    setRecordingUI(true);
+  }
+
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+    }
+    if (preview.srcObject) {
+      preview.srcObject.getTracks().forEach((t) => t.stop());
+    }
+    if (screenStream) {
+      screenStream.getTracks().forEach((track) => track.stop());
+    }
+    if (micStream) {
+      micStream.getTracks().forEach((track) => track.stop());
+    }
+    setRecordingUI(false);
+  }
+
+  recordButton.onclick = () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  };
+
+  screenshotButton.onclick = () => {
+    if (!isRecording) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = preview.videoWidth;
+    canvas.height = preview.videoHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(preview, 0, 0, canvas.width, canvas.height);
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    a.download = `screenshot_${timestamp}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  async function handleRecordingStop() {
+    const combinedBlob = new Blob(recordedChunks, { type: "video/webm" });
+    const videoUrl = URL.createObjectURL(combinedBlob);
+    preview.srcObject = null;
+    preview.src = videoUrl;
+    preview.controls = true;
+    preview.muted = false;
+    preview.play();
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const filename = `recording_${timestamp}.webm`;
+    downloadLink.href = videoUrl;
+    downloadLink.download = filename;
+    downloadLink.classList.remove("hidden-element");
+
+    const formData = new FormData();
+    formData.append("video", combinedBlob, filename);
+    transcriptionStatus.innerHTML = `<div class="status-message"><span>Uploading video...</span><div class="status-spinner"></div></div>`;
+
+    try {
+      const videoResponse = await fetch("/video-upload", { method: "POST", body: formData });
+      if (!videoResponse.ok) throw new Error("Video upload failed");
+
+      transcriptionStatus.innerHTML = `<div class="status-message"><span>Transcribing audio...</span><div class="status-spinner"></div></div>`;
+      const audioBlob = await extractAudioFromVideo(combinedBlob);
+      const audioFormData = new FormData();
+      audioFormData.append("audio", audioBlob, "recording.wav");
+      const audioResponse = await fetch("/audio-upload", { method: "POST", body: audioFormData });
+      if (!audioResponse.ok) throw new Error("Audio transcription failed");
+      const transcriptionResult = await audioResponse.json();
+      transcriptionStatus.innerHTML = "";
+
+      if (transcriptionResult.transcription && transcriptionResult.segments) {
+        displayTranscription(transcriptionResult.segments);
+        fullTranscript = transcriptionResult.transcription;
+        showAlert("Transcription complete!", "success");
+      } else if (transcriptionResult.error) {
+        transcriptionStatus.innerHTML = `<div class="alert alert-error"><div class="alert-content">Error: ${transcriptionResult.error}</div></div>`;
+      } else {
+        transcriptionStatus.innerHTML = `<div class="alert alert-warning"><div class="alert-content">Transcription complete, but no content returned.</div></div>`;
+      }
+    } catch (err) {
+      transcriptionStatus.innerHTML = `<div class="alert alert-error"><div class="alert-content">Error: ${err.message}</div></div>`;
+    }
+  }
+
+  function displayTranscription(segments) {
+    transcriptContent.innerHTML = "";
+    segments.forEach((segment) => {
+      const segmentElement = document.createElement("div");
+      segmentElement.className = "transcript-segment";
+      const startSeconds = Math.floor(segment.start);
+      const minutes = Math.floor(startSeconds / 60);
+      const seconds = startSeconds % 60;
+      const formattedTimestamp = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+      segmentElement.innerHTML = `<span class="timestamp">[${formattedTimestamp}]</span><span class="text">${segment.text}</span>`;
+      segmentElement.onclick = () => {
+        preview.currentTime = segment.start;
+        preview.play();
+      };
+      transcriptContent.appendChild(segmentElement);
+    });
+
+    if (segments.length > 0) {
+      downloadTranscriptBtn.classList.remove("hidden-element");
+      transcriptWrapper.classList.add("visible");
+      toggleIcon.classList.add("rotated");
+    }
+  }
+
+  async function extractAudioFromVideo(videoBlob) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const arrayBuffer = await videoBlob.arrayBuffer();
+        const audioContext = new AudioContext();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+        function encodeWAV(audioBuffer) {
+          const numOfChan = audioBuffer.numberOfChannels,
+            length = audioBuffer.length * numOfChan * 2 + 44,
+            buffer = new ArrayBuffer(length),
+            view = new DataView(buffer),
+            channels = [],
+            sampleRate = audioBuffer.sampleRate;
+
+          function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+              view.setUint8(offset + i, string.charCodeAt(i));
+            }
+          }
+
+          writeString(view, 0, "RIFF");
+          view.setUint32(4, length - 8, true);
+          writeString(view, 8, "WAVE");
+          writeString(view, 12, "fmt ");
+          view.setUint32(16, 16, true);
+          view.setUint16(20, 1, true);
+          view.setUint16(22, numOfChan, true);
+          view.setUint32(24, sampleRate, true);
+          view.setUint32(28, sampleRate * numOfChan * 2, true);
+          view.setUint16(32, numOfChan * 2, true);
+          view.setUint16(34, 16, true);
+          writeString(view, 36, "data");
+          view.setUint32(40, length - 44, true);
+
+          for (let i = 0; i < numOfChan; i++) {
+            channels.push(audioBuffer.getChannelData(i));
+          }
+
+          let offset = 44;
+          for (let i = 0; i < audioBuffer.length; i++) {
+            for (let ch = 0; ch < numOfChan; ch++) {
+              let sample = Math.max(-1, Math.min(1, channels[ch][i]));
+              sample = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+              view.setInt16(offset, sample, true);
+              offset += 2;
+            }
+          }
+
+          return new Blob([buffer], { type: "audio/wav" });
+        }
+
+        const wavBlob = encodeWAV(audioBuffer);
+        resolve(wavBlob);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  transcriptToggle.onclick = () => {
+    transcriptWrapper.classList.toggle("visible");
+    toggleIcon.classList.toggle("rotated");
+  };
+
+  downloadTranscriptBtn.onclick = (e) => {
+    e.preventDefault();
+    if (!fullTranscript) return;
+    const blob = new Blob([fullTranscript], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    a.download = `transcript_${timestamp}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+</script>
+{% endblock extra_js %}

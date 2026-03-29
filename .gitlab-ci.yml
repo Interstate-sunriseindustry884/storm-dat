@@ -1,0 +1,24 @@
+variables:
+  PYTHONPATH: "src:${PYTHONPATH}"
+
+stages:
+  - lint
+  - test
+
+before_script:
+  - pip install -r requirements.txt --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org
+
+lint:
+  image: python:3.12
+  stage: lint
+  script:
+    - pylint src --rcfile .pylintrc
+    - pyflakes src
+  allow_failure: false
+
+
+test:
+  stage: test
+  image: python:3.12
+  script:
+    - pytest -v --pycodestyle --ignore=tests/TestFiles

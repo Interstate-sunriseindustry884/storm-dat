@@ -1,0 +1,17 @@
+.git
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.db
+.ipynb_checkpoints
+.env
+.env.*
+! .env.production
+log_file.log
+src/static/uploads/*
+src/static/outputs/*
+node_modules
+dist
+build

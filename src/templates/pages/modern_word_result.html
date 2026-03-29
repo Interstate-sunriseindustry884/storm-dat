@@ -1,0 +1,133 @@
+{% extends 'modern_base.html' %}
+{% block title %}Analysis Results - Acronym Sweep{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <div class="page-header">
+        <h1>Analysis Complete</h1>
+        <p>Your document has been analyzed successfully</p>
+    </div>
+
+    <!-- Download Cards -->
+    <div class="grid grid-3 mb-xl">
+        <div class="card">
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="var(--primary-color)" style="margin: 0 auto;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+            </div>
+            <h3 class="card-title text-center" style="font-size: 1rem;">Highlighted Document</h3>
+            <p class="text-muted text-center mb-md" style="font-size: 0.875rem;">Word document with color-coded findings</p>
+            <a href="{{ url_for('static', filename='outputs/' + output_filenames.word) }}"
+               download
+               class="btn btn-primary"
+               style="width: 100%;">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download
+            </a>
+        </div>
+
+        <div class="card">
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="var(--secondary-color)" style="margin: 0 auto;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+            </div>
+            <h3 class="card-title text-center" style="font-size: 1rem;">Findings Report</h3>
+            <p class="text-muted text-center mb-md" style="font-size: 0.875rem;">Excel spreadsheet with all findings</p>
+            <a href="{{ url_for('static', filename='outputs/' + output_filenames.excel) }}"
+               download
+               class="btn btn-secondary"
+               style="width: 100%;">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download
+            </a>
+        </div>
+
+        <div class="card">
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="var(--info-color)" style="margin: 0 auto;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+            </div>
+            <h3 class="card-title text-center" style="font-size: 1rem;">Quick Actions</h3>
+            <p class="text-muted text-center mb-md" style="font-size: 0.875rem;">Analyze another document</p>
+            <a href="{{ url_for('main.upload_word') }}"
+               class="btn btn-outline"
+               style="width: 100%;">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Analyze Another
+            </a>
+        </div>
+    </div>
+
+    <!-- Color Legend -->
+    <div class="card mb-lg">
+        <div class="card-header">
+            <h3 class="card-title">Finding Types</h3>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 20px; height: 20px; background-color: #FFC0CB; border-radius: 4px; flex-shrink: 0;"></div>
+                <span style="font-size: 0.875rem;">Pink - Font/Styling Issues</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 20px; height: 20px; background-color: #008080; border-radius: 4px; flex-shrink: 0;"></div>
+                <span style="font-size: 0.875rem;">Teal - Duplicate Definition</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 20px; height: 20px; background-color: #00FF00; border-radius: 4px; flex-shrink: 0;"></div>
+                <span style="font-size: 0.875rem;">Green - Needs Abbreviation</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 20px; height: 20px; background-color: #FFD700; border-radius: 4px; flex-shrink: 0;"></div>
+                <span style="font-size: 0.875rem;">Yellow - Missing Definition</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 20px; height: 20px; background-color: #FF0000; border-radius: 4px; flex-shrink: 0;"></div>
+                <span style="font-size: 0.875rem;">Red - Double Space</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 20px; height: 20px; background-color: #8B00FF; border-radius: 4px; flex-shrink: 0;"></div>
+                <span style="font-size: 0.875rem;">Violet - Not in List</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 20px; height: 20px; background-color: #0000FF; border-radius: 4px; flex-shrink: 0;"></div>
+                <span style="font-size: 0.875rem;">Blue - Potential Acronym</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Findings Table -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Detailed Findings</h3>
+        </div>
+        <div class="table-container">
+            {{ output_html | safe }}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Override table styles for findings */
+    .table-container table {
+        font-size: 0.875rem;
+    }
+
+    .table-container td {
+        line-height: 1.6;
+    }
+
+    /* Color text matching highlights */
+    .table-container td[style*="color: #FF0000"] {
+        font-weight: 600;
+    }
+</style>
+{% endblock body %}
